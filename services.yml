@@ -1,0 +1,17 @@
+# Конфиг сервисов для health-мониторинга.
+#
+# defaults — параметры по умолчанию для всех сервисов.
+# Любое поле можно переопределить на уровне конкретного сервиса.
+
+defaults:
+  interval: 60          # секунд между успешными проверками
+  timeout: 10           # таймаут одного HTTP-запроса (сек)
+  retries: 3            # сколько повторных попыток до объявления DOWN
+  retry_delay: 5        # секунд между retry-попытками
+
+services:
+  - name: dedai-prod
+    url: https://api.dedai.ru/health
+  # - name: dedai-staging
+  #   url: https://staging.dedai.ru/health
+  #   interval: 30      # пример override
