@@ -47,7 +47,7 @@ async def main() -> None:
     notifier = Notifier(bot=bot, recipients=recipients)
     monitor = Monitor(services=services, notifier=notifier)
     dispatcher = build_dispatcher(
-        owner_id=settings.owner_id,
+        admin_chat_id=settings.admin_chat_id,
         recipients=recipients,
         monitor=monitor,
     )

@@ -34,17 +34,17 @@ cd ded-healthbot
 pyenv install 3.13     # если ещё нет нужной версии
 pyenv local 3.13
 poetry install
-cp .env.example .env   # заполнить BOT_TOKEN и OWNER_ID
+cp .env.example .env   # заполнить BOT_TOKEN и ADMIN_CHAT_ID
 ```
 
 ## Конфигурация
 
 ### `.env`
 
-| Переменная | Назначение                                          |
-|------------|-----------------------------------------------------|
-| `BOT_TOKEN`| Токен бота от @BotFather                            |
-| `OWNER_ID` | Telegram user_id владельца (единственный админ)     |
+| Переменная       | Назначение                                                                |
+|------------------|---------------------------------------------------------------------------|
+| `BOT_TOKEN`      | Токен бота от @BotFather                                                  |
+| `ADMIN_CHAT_ID`  | chat_id чата-владельца (личка или группа админов). Команды управления принимаются только оттуда. |
 
 ### `services.yml`
 
@@ -75,11 +75,11 @@ poetry run python -m healthbot
 |-------------------------------|------------------|---------------------------------------------------|
 | `/status`                     | подписчики       | Снимок состояния всех сервисов                    |
 | `/list`                       | подписчики       | Список настроенных сервисов из `services.yml`     |
-| `/subscribe`                  | OWNER_ID         | Добавить **текущий** чат в подписчики             |
-| `/subscribe <chat_id>`        | OWNER_ID         | Добавить произвольный chat_id                     |
-| `/unsubscribe`                | OWNER_ID         | Удалить текущий чат                               |
-| `/unsubscribe <chat_id>`      | OWNER_ID         | Удалить произвольный chat_id                      |
-| `/recipients`                 | OWNER_ID         | Показать список получателей                       |
+| `/subscribe`                  | ADMIN_CHAT_ID    | Добавить **текущий** чат в подписчики             |
+| `/subscribe <chat_id>`        | ADMIN_CHAT_ID    | Добавить произвольный chat_id                     |
+| `/unsubscribe`                | ADMIN_CHAT_ID    | Удалить текущий чат                               |
+| `/unsubscribe <chat_id>`      | ADMIN_CHAT_ID    | Удалить произвольный chat_id                      |
+| `/recipients`                 | ADMIN_CHAT_ID    | Показать список получателей                       |
 
 ## Логика статусов
 

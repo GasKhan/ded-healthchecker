@@ -15,11 +15,15 @@ class Settings(BaseSettings):
         ...,
         description="Токен Telegram-бота от @BotFather.",
     )
-    owner_id: int = Field(
+    admin_chat_id: int = Field(
         ...,
         description=(
-            "Telegram user_id владельца — единственный, кто может "
-            "управлять списком получателей."
+            "Telegram chat_id чата-владельца. Команды управления "
+            "(/subscribe, /unsubscribe, /recipients) принимаются "
+            "только из этого чата. Может быть личкой (положительный "
+            "user_id) или группой (отрицательный chat_id вида "
+            "-1001234567890) — в группе любой её участник сможет "
+            "управлять подписками."
         ),
     )
     services_config_path: Path = Field(

@@ -16,20 +16,21 @@ logger = logging.getLogger(__name__)
 
 def build_dispatcher(
     *,
-    owner_id: int,
+    admin_chat_id: int,
     recipients: RecipientStore,
     monitor: Monitor,
 ) -> Dispatcher:
     """Создаёт Dispatcher с зарегистрированными хендлерами.
 
     Все команды управления (/subscribe, /unsubscribe, /recipients)
-    защищены фильтром по owner_id — посторонним не отвечаем.
+    защищены фильтром по admin_chat_id — принимаются только из
+    указанного чата (личка владельца или группа администраторов).
     Команды просмотра (/status, /list) — для всех подписчиков.
     """
     dp = Dispatcher()
     router = Router()
 
-    owner_filter = F.from_user.id == owner_id
+    admin_filter = F.chat.id == admin_chat_id
 
     @router.message(Command("start"))
     async def cmd_start(message: Message) -> None:
@@ -66,7 +67,7 @@ def build_dispatcher(
         ]
         await message.answer("\n".join(rows))
 
-    @router.message(Command("subscribe"), owner_filter)
+    @router.message(Command("subscribe"), admin_filter)
     async def cmd_subscribe(
         message: Message, command: CommandObject,
     ) -> None:
@@ -87,7 +88,7 @@ def build_dispatcher(
             f"Добавлен: {chat_id}" if added else f"Уже был: {chat_id}"
         )
 
-    @router.message(Command("unsubscribe"), owner_filter)
+    @router.message(Command("unsubscribe"), admin_filter)
     async def cmd_unsubscribe(
         message: Message, command: CommandObject,
     ) -> None:
@@ -103,7 +104,7 @@ def build_dispatcher(
             f"Удалён: {chat_id}" if removed else f"Не был в списке: {chat_id}"
         )
 
-    @router.message(Command("recipients"), owner_filter)
+    @router.message(Command("recipients"), admin_filter)
     async def cmd_recipients(message: Message) -> None:
         """Список текущих получателей алертов."""
         chats = await recipients.list_chats()
